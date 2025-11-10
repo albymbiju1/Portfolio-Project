@@ -11,13 +11,39 @@
   to = "/.netlify/functions/:splat"
   status = 200
 
-# Handle SPA routing - redirect all non-file, non-API paths to index.html
+# Handle static assets
+[[redirects]]
+  from = "/assets/*"
+  to = "/assets/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/images/*"
+  to = "/images/:splat"
+  status = 200
+
+# Handle specific files
+[[redirects]]
+  from = "/index.html"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/favicon.ico"
+  to = "/favicon.ico"
+  status = 200
+
+# Handle root path
+[[redirects]]
+  from = "/"
+  to = "/index.html"
+  status = 200
+
+# Handle all other routes with SPA routing
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-  force = false
-  query = {path = ":path"}
 
 [dev]
   command = "npm run dev"

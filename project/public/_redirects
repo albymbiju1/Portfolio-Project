@@ -1,5 +1,0 @@
-# Handle API routes
-/api/* /.netlify/functions/:splat 200
-
-# Handle SPA routing - all other routes go to index.html
-/* /index.html 200
