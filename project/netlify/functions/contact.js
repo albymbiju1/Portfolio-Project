@@ -83,6 +83,14 @@ exports.handler = async (event, context) => {
 
     // Send email notification
     let emailSent = false;
+    let emailError = null;
+
+    console.log('Email config check:', {
+      hasUser: !!process.env.EMAIL_USER,
+      hasPass: !!process.env.EMAIL_PASS,
+      userEmail: process.env.EMAIL_USER
+    });
+
     if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
       try {
         const transporter = createTransporter();
@@ -105,12 +113,17 @@ exports.handler = async (event, context) => {
           `
         };
 
-        await transporter.sendMail(mailOptions);
+        console.log('Attempting to send email...');
+        const result = await transporter.sendMail(mailOptions);
+        console.log('Email sent successfully:', result);
         emailSent = true;
-      } catch (emailError) {
-        console.error('Failed to send email:', emailError);
+      } catch (error) {
+        emailError = error;
+        console.error('Failed to send email:', error);
         // Continue even if email fails
       }
+    } else {
+      console.log('Email credentials not configured');
     }
 
     return {
@@ -123,6 +136,7 @@ exports.handler = async (event, context) => {
         success: true,
         message: 'Contact form submitted successfully!',
         emailSent,
+        emailError: emailError ? emailError.message : null,
         submissionId: submission.id
       })
     };
