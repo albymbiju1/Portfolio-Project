@@ -5,13 +5,25 @@ let submissions = [];
 
 // Email transporter configuration
 const createTransporter = () => {
-  // Using Gmail as example - you'll need to configure this
+  console.log('Creating email transporter with:', {
+    service: 'gmail',
+    hasUser: !!process.env.EMAIL_USER,
+    hasPass: !!process.env.EMAIL_PASS,
+    user: process.env.EMAIL_USER ? process.env.EMAIL_USER.substring(0, 3) + '***' : 'not set'
+  });
+
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    throw new Error('Email credentials not configured');
+  }
+
   return nodemailer.createTransporter({
     service: 'gmail',
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS
-    }
+    },
+    debug: true, // Enable debug logging
+    logger: true  // Enable logger
   });
 };
 
@@ -85,45 +97,43 @@ exports.handler = async (event, context) => {
     let emailSent = false;
     let emailError = null;
 
-    console.log('Email config check:', {
-      hasUser: !!process.env.EMAIL_USER,
-      hasPass: !!process.env.EMAIL_PASS,
-      userEmail: process.env.EMAIL_USER
-    });
+    try {
+      console.log('Creating transporter...');
+      const transporter = createTransporter();
 
-    if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-      try {
-        const transporter = createTransporter();
+      console.log('Verifying SMTP connection...');
+      await transporter.verify();
+      console.log('✅ SMTP connection verified');
 
-        const mailOptions = {
-          from: process.env.EMAIL_USER,
-          to: 'albymbiju7@gmail.com', // Your email to receive notifications
-          subject: `New Contact Form Submission from ${name}`,
-          html: `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-              <h2 style="color: #7928ca;">New Contact Form Submission</h2>
-              <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                <p><strong>Name:</strong> ${name}</p>
-                <p><strong>Email:</strong> ${email}</p>
-                <p><strong>Message:</strong></p>
-                <p style="white-space: pre-wrap; background: white; padding: 15px; border-radius: 4px;">${message}</p>
-              </div>
-              <p style="color: #666; font-size: 14px;">Submitted on: ${new Date().toLocaleString()}</p>
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: 'albymbiju7@gmail.com', // Your email to receive notifications
+        subject: `New Contact Form Submission from ${name}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h2 style="color: #7928ca;">New Contact Form Submission</h2>
+            <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <p><strong>Name:</strong> ${name}</p>
+              <p><strong>Email:</strong> ${email}</p>
+              <p><strong>Message:</strong></p>
+              <p style="white-space: pre-wrap; background: white; padding: 15px; border-radius: 4px;">${message}</p>
             </div>
-          `
-        };
+            <p style="color: #666; font-size: 14px;">Submitted on: ${new Date().toLocaleString()}</p>
+          </div>
+        `
+      };
 
-        console.log('Attempting to send email...');
-        const result = await transporter.sendMail(mailOptions);
-        console.log('Email sent successfully:', result);
-        emailSent = true;
-      } catch (error) {
-        emailError = error;
-        console.error('Failed to send email:', error);
-        // Continue even if email fails
-      }
-    } else {
-      console.log('Email credentials not configured');
+      console.log('Sending email to:', mailOptions.to);
+      const result = await transporter.sendMail(mailOptions);
+      console.log('✅ Email sent successfully:', result);
+      emailSent = true;
+    } catch (error) {
+      emailError = error;
+      console.error('❌ Email sending failed:', {
+        message: error.message,
+        code: error.code,
+        command: error.command
+      });
     }
 
     return {
