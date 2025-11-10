@@ -398,7 +398,7 @@ function App() {
               </motion.a>
               <motion.a
                 whileHover={{ scale: 1.2, rotate: 360 }}
-                href="www.linkedin.com/in/albymbiju"
+                href="https://www.linkedin.com/in/albymbiju"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-[#7928ca] transition-colors"
@@ -407,7 +407,7 @@ function App() {
               </motion.a>
               <motion.a
                 whileHover={{ scale: 1.2, rotate: 360 }}
-                href="albymbiju2002@gmail.com"
+                href="mailto:albymbiju2002@gmail.com"
                 className="text-gray-400 hover:text-[#7928ca] transition-colors"
               >
                 <Mail size={20} />
