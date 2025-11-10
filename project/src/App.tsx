@@ -91,11 +91,10 @@ function App() {
 
   // Download CV
   const handleDownloadCV = () => {
-    // Replace this URL with your actual CV file URL
-    const cvUrl = '/path-to-your-cv.pdf';
+    const cvUrl = '/images/Alby M Biju_Resume.pdf';
     const link = document.createElement('a');
     link.href = cvUrl;
-    link.download = 'developer-cv.pdf';
+    link.download = 'Alby-M-Biju-CV.pdf';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -390,7 +389,7 @@ function App() {
             <div className="flex gap-6 mt-4 md:mt-0">
               <motion.a
                 whileHover={{ scale: 1.2, rotate: 360 }}
-                href="https://github.com/yourusername"
+                href="https://github.com/albymbiju1"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-[#7928ca] transition-colors"
@@ -399,7 +398,7 @@ function App() {
               </motion.a>
               <motion.a
                 whileHover={{ scale: 1.2, rotate: 360 }}
-                href="https://linkedin.com/in/yourusername"
+                href="www.linkedin.com/in/albymbiju"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-[#7928ca] transition-colors"
@@ -408,7 +407,7 @@ function App() {
               </motion.a>
               <motion.a
                 whileHover={{ scale: 1.2, rotate: 360 }}
-                href="mailto:your.email@example.com"
+                href="albymbiju2002@gmail.com"
                 className="text-gray-400 hover:text-[#7928ca] transition-colors"
               >
                 <Mail size={20} />
