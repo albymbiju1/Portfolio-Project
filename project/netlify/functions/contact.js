@@ -89,7 +89,7 @@ exports.handler = async (event, context) => {
 
         const mailOptions = {
           from: process.env.EMAIL_USER,
-          to: 'albymbiju2002@gmail.com', // Your email to receive notifications
+          to: 'albymbiju7@gmail.com', // Your email to receive notifications
           subject: `New Contact Form Submission from ${name}`,
           html: `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
