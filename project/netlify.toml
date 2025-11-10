@@ -5,10 +5,19 @@
 [build.environment]
   NODE_VERSION = "18"
 
+# Handle API routes
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
   status = 200
+
+# Handle SPA routing - redirect all non-file, non-API paths to index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = false
+  query = {path = ":path"}
 
 [dev]
   command = "npm run dev"
