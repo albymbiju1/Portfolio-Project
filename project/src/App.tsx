@@ -254,7 +254,7 @@ function App() {
               }}
               tags={["React", "TypeScript", "Flask"]}
               links={{
-                demo: "https://smartjewel-p523.onrender.com",
+                demo: "https://www.smartjewel.app",
                 github: "https://github.com/albymbiju1/SmartJewel"
               }}
             />
